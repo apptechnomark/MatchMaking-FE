@@ -29,7 +29,7 @@ const FormComponent: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [fileErr, setFileErr] = useState<0 | 1 | 2 | 3>(0);
   const [progress, setProgress] = useState(0);
-  const [loaded, setLoaded] = useState(false)
+  const [loaded, setLoaded] = useState(false);
 
   const allowedExtensions = ["pdf"];
 
@@ -142,7 +142,7 @@ const FormComponent: React.FC = () => {
       fileName !== null &&
       fileErr === 0
     ) {
-      setLoaded(true)
+      setLoaded(true);
       try {
         const formData = new FormData();
         formData.append("name", name);
@@ -168,21 +168,21 @@ const FormComponent: React.FC = () => {
           toast.success("Form submitted successfully!");
           localStorage.setItem("Username", Username);
           localStorage.setItem("ResponseData", JSON.stringify(ResponseData));
-          setLoaded(false)
+          setLoaded(false);
           router.push("/recommendations");
         } else {
           toast.error("Failed to submit form. Please try again.");
-          setLoaded(false)
+          setLoaded(false);
         }
       } catch (error) {
-        setLoaded(false)
+        setLoaded(false);
         toast.error("Failed to submit form. Please try again.");
       }
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-[50%]">
+    <form onSubmit={handleSubmit} className="ml-10 lg:ml-0 w-[80%] lg:w-[50%]">
       <TextField
         label={
           <span>
@@ -210,11 +210,12 @@ const FormComponent: React.FC = () => {
           nameError && name?.trim().length > 50
             ? "Maximum 50 characters allowed."
             : nameError && name?.trim().length > 0 && name?.trim().length < 3
-              ? "Minimum 3 characters allowed."
-              : nameError
-                ? "This is a required field."
-                : ""
+            ? "Minimum 3 characters allowed."
+            : nameError
+            ? "This is a required field."
+            : ""
         }
+        autoComplete="off"
         margin="normal"
         variant="standard"
       />
@@ -248,11 +249,12 @@ const FormComponent: React.FC = () => {
           emailError && email?.trim().length > 100
             ? "Maximum 100 characters allowed."
             : emailError && email?.trim().length > 0 && !regex.test(email)
-              ? "Please enter valid email."
-              : emailError
-                ? "This is a required field."
-                : ""
+            ? "Please enter valid email."
+            : emailError
+            ? "This is a required field."
+            : ""
         }
+        autoComplete="off"
         margin="normal"
         variant="standard"
       />
@@ -295,10 +297,10 @@ const FormComponent: React.FC = () => {
             : mobileNumberError &&
               mobileNumber?.trim().length > 0 &&
               mobileNumber?.trim().length < 10
-              ? "Please provide valid mobile number."
-              : mobileNumberError
-                ? "This is a required field."
-                : ""
+            ? "Please provide valid mobile number."
+            : mobileNumberError
+            ? "This is a required field."
+            : ""
         }
         margin="normal"
         variant="standard"
@@ -309,9 +311,9 @@ const FormComponent: React.FC = () => {
             margin: 0,
           },
           "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button":
-          {
-            "-webkit-appearance": "none",
-          },
+            {
+              "-webkit-appearance": "none",
+            },
         }}
       />
       <div
@@ -320,7 +322,8 @@ const FormComponent: React.FC = () => {
         <div
           className={`!h-16 bg-slate-300
  
-            ${true ? `border-red-600` : `border-gray-300`
+            ${
+              true ? `border-red-600` : `border-gray-300`
             } rounded-lg w-full overflow-hidden flex justify-center items-center`}
         >
           <span className="cursor-pointer w-full">
@@ -366,7 +369,10 @@ const FormComponent: React.FC = () => {
                         <div className="flex items-center gap-2">
                           <CloudUploadIcon />
                           <div className="flex flex-col items-start">
-                            <p className="text-sm"> Drag and drop files here</p>
+                            <p className="text-xs lg:text-sm">
+                              {" "}
+                              Drag and drop files here
+                            </p>
                             <p className="text-xs opacity-50">
                               Limit 200MB per file
                               {/* <span className="w-2 h-2 rounded-full bg-red-500"></span> */}{" "}
@@ -377,7 +383,7 @@ const FormComponent: React.FC = () => {
                         <div>
                           <Button
                             variant="outlined"
-                            className="border-gray-500 text-gray-500 bg-white hover:border-gray-500 hover:text-gray-500 hover:bg-white text-xs px-2"
+                            className="border-gray-500 text-gray-500 bg-white hover:border-gray-500 hover:text-gray-500 hover:bg-white text-xs px-1 lg:px-2"
                           >
                             Browse Files
                           </Button>
@@ -394,19 +400,25 @@ const FormComponent: React.FC = () => {
           {fileErr === 1
             ? "Only PDF files are accepted. Please upload a valid PDF file."
             : fileErr === 2
-              ? " File size shouldn&apos;t be more than 200MB."
-              : fileErr === 3
-                ? " This is a required field."
-                : ""}
+            ? " File size shouldn&apos;t be more than 200MB."
+            : fileErr === 3
+            ? " This is a required field."
+            : ""}
         </div>
       </div>
-      {loaded ? <span className="w-full flex item-center justify-center"><CircularProgress /></span> : <Button
-        variant="contained"
-        className="rounded-[4px] !h-[36px] mt-5 w-full !bg-[#0592C6] cursor-pointer"
-        type="submit"
-      >
-        Submit
-      </Button>}
+      {loaded ? (
+        <span className="w-full flex item-center justify-center">
+          <CircularProgress />
+        </span>
+      ) : (
+        <Button
+          variant="contained"
+          className="rounded-[4px] !h-[36px] mt-5 w-full !bg-[#0592C6] cursor-pointer"
+          type="submit"
+        >
+          Submit
+        </Button>
+      )}
     </form>
   );
 };

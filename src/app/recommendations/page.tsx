@@ -40,14 +40,13 @@ const Page: React.FC = () => {
     setUserName(Username);
     if (ResponseData) {
       try {
-        const parsedResponseData = JSON.parse(ResponseData); // Parse ResponseData from string to array
+        const parsedResponseData = JSON.parse(ResponseData);
         setResponseData(parsedResponseData);
       } catch (error) {
-        console.error("Error parsing ResponseData:", error);
-        setResponseData([]); // Set to empty array in case of parsing error
+        setResponseData([]);
       }
     }
-    Username?.length > 0 ? setLoader(false) : setLoader(true);
+    setLoader(false);
   }, []);
 
   return (
@@ -70,26 +69,31 @@ const Page: React.FC = () => {
               <SkillTag key={index} skill={skill} />
             ))}
           </div> */}
-          <div className="flex items-center justify-center gap-2 text-xl font-semibold">
-            {userName.charAt(0).toUpperCase() + userName.slice(1)}&apos;s
-            Profile Matching
-            <TipsAndUpdatesIcon className="text-yellow-400" />
-          </div>
-          <div
-            className={`flex flex-wrap items-center justify-start border border-gray-500 bg-gray-100 rounded-lg w-1/2 min-h-20 py-5 px-2 gap-5`}
-          >
-            {responseData.length > 0 ? (
+          {!!userName && (
+            <div className="flex items-center justify-center gap-2 text-xl font-semibold">
+              {userName.charAt(0).toUpperCase() + userName.slice(1)}&apos;s
+              Profile Matching
+              <TipsAndUpdatesIcon className="text-yellow-400" />
+            </div>
+          )}
+
+          {responseData.length > 0 ? (
+            <div
+              className={`flex flex-wrap items-center justify-start border border-gray-500 bg-gray-100 rounded-lg w-[90%] lg:w-1/2 min-h-20 py-5 px-2 gap-5`}
+            >
               <div className="w-full">
                 <div className="flex justify-between items-center w-full mb-4 px-10">
-                  <h3 className="w-1/2 text-left font-bold">Name</h3>
-                  <h3 className="w-1/2 text-right font-bold">Match Value</h3>
+                  <h3 className="w-2/3 lg:w-1/2 text-left font-bold">Name</h3>
+                  <h3 className="w-1/3 lg:w-1/2 text-right font-bold">
+                    Match
+                  </h3>
                 </div>
                 {responseData?.map((item: any, index: number) => (
                   <div
                     key={index}
                     className="flex justify-between w-full mb-3 px-10"
                   >
-                    <span className="w-1/2 text-left">
+                    <span className="w-2/3 lg:w-1/2 text-left">
                       {item.name.length > 30 ? (
                         <Tooltip title={item.name} placement="top" arrow>
                           <span>{`${item.name.slice(0, 30)}...`}</span>
@@ -98,18 +102,18 @@ const Page: React.FC = () => {
                         item.name
                       )}
                     </span>
-                    <span className="w-1/2 text-right">
+                    <span className="w-1/3 lg:w-1/2 text-right">
                       {item.matchValue.toString().slice(0, 5)}%
                     </span>
                   </div>
                 ))}
               </div>
-            ) : (
-              <div className="w-full flex items-center justify-center">
-                There is no match found.
-              </div>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div className="w-full flex items-center justify-center">
+              There is no match found.
+            </div>
+          )}
         </div>
       )}
     </>
