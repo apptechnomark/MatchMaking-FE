@@ -105,7 +105,7 @@ const Page: React.FC = () => {
                     Your CV
                   </span> */}
                   <a
-                    href="https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf"
+                    href="http://20.198.19.81/match_making/upload/Document.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-[#0592C6]"
@@ -181,7 +181,7 @@ const Page: React.FC = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                           <a
-                            href="https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf"
+                            href={`http://20.198.19.81/match_making/upload/${item.name}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-[#0592C6]"
