@@ -21,9 +21,6 @@ const FormComponent: React.FC = () => {
   const [nameError, setNameError] = useState(false);
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState(false);
-  const [mobileNumber, setMobileNumber] = useState("");
-  const [mobileNumberError, setMobileNumberError] = useState(false);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [fileName, setFileName] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -122,23 +119,14 @@ const FormComponent: React.FC = () => {
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    name.trim().length < 3 && setNameError(true);
-    name.trim().length > 50 && setNameError(true);
-    email.trim().length <= 0 && setEmailError(true);
-    email.trim().length > 100 && setEmailError(true);
-    mobileNumber.trim().length < 10 && setMobileNumberError(true);
-    mobileNumber.trim().length > 10 && setMobileNumberError(true);
+    // name.trim().length < 3 && setNameError(true);
+    // name.trim().length > 50 && setNameError(true);
     fileName === null && setFileErr(3);
-    setEmailError(!regex.test(email));
 
     if (
-      !nameError &&
-      name.trim().length > 3 &&
-      name.trim().length < 50 &&
-      !emailError &&
-      email.trim().length > 0 &&
-      email.trim().length < 100 &&
-      mobileNumber.trim().length === 10 &&
+      // !nameError &&
+      // name.trim().length > 3 &&
+      // name.trim().length < 50 &&
       fileName !== null &&
       fileErr === 0
     ) {
@@ -147,13 +135,13 @@ const FormComponent: React.FC = () => {
         const formData = new FormData();
         formData.append("name", name);
         formData.append("email", email);
-        formData.append("mobile", mobileNumber);
+        formData.append("mobile", "");
         if (file) {
           formData.append("file", file);
         } else {
           throw new Error("File is null");
         }
-
+        localStorage.setItem("File", fileName);
         const response = await axios.post(
           "https://crm-stageapi.pacificabs.com:5001/match_making",
           formData,
@@ -184,37 +172,32 @@ const FormComponent: React.FC = () => {
   return (
     <form onSubmit={handleSubmit} className="ml-10 lg:ml-0 w-[80%] lg:w-[50%]">
       <TextField
-        label={
-          <span>
-            Name
-            <span className="!text-[#DC3545]">&nbsp;*</span>
-          </span>
-        }
+        label="Name"
         className={`${nameError && "!mt-0"}`}
         fullWidth
         value={name?.trim().length <= 0 ? "" : name}
         onChange={(e) => {
           setName(e.target.value);
-          setNameError(false);
+          // setNameError(false);
         }}
-        onBlur={(e) => {
-          if (
-            e.target.value.trim().length < 3 ||
-            e.target.value.trim().length > 50
-          ) {
-            setNameError(true);
-          }
-        }}
-        error={nameError}
-        helperText={
-          nameError && name?.trim().length > 50
-            ? "Maximum 50 characters allowed."
-            : nameError && name?.trim().length > 0 && name?.trim().length < 3
-            ? "Minimum 3 characters allowed."
-            : nameError
-            ? "This is a required field."
-            : ""
-        }
+        // onBlur={(e) => {
+        //   if (
+        //     e.target.value.trim().length < 3 ||
+        //     e.target.value.trim().length > 50
+        //   ) {
+        //     setNameError(true);
+        //   }
+        // }}
+        // error={nameError}
+        // helperText={
+        //   nameError && name?.trim().length > 50
+        //     ? "Maximum 50 characters allowed."
+        //     : nameError && name?.trim().length > 0 && name?.trim().length < 3
+        //     ? "Minimum 3 characters allowed."
+        //     : nameError
+        //     ? "This is a required field."
+        //     : ""
+        // }
         autoComplete="off"
         margin="normal"
         variant="standard"
@@ -222,99 +205,15 @@ const FormComponent: React.FC = () => {
       <TextField
         type="email"
         sx={{ mt: "12px" }}
-        label={
-          <span>
-            Email
-            <span className="!text-[#DC3545]">&nbsp;*</span>
-          </span>
-        }
-        className={`${emailError && "!mt-0"}`}
+        label="Email"
         fullWidth
         value={email?.trim().length <= 0 ? "" : email}
         onChange={(e) => {
           setEmail(e.target.value);
-          setEmailError(false);
         }}
-        onBlur={(e) => {
-          if (
-            e.target.value.trim().length < 1 ||
-            e.target.value.trim().length > 100 ||
-            !regex.test(e.target.value)
-          ) {
-            setEmailError(true);
-          }
-        }}
-        error={emailError}
-        helperText={
-          emailError && email?.trim().length > 100
-            ? "Maximum 100 characters allowed."
-            : emailError && email?.trim().length > 0 && !regex.test(email)
-            ? "Please enter valid email."
-            : emailError
-            ? "This is a required field."
-            : ""
-        }
         autoComplete="off"
         margin="normal"
         variant="standard"
-      />
-      <TextField
-        label={
-          <span>
-            Mobile Number
-            <span className="!text-[#DC3545]">&nbsp;*</span>
-          </span>
-        }
-        className={`${mobileNumberError && "!mt-0"}`}
-        fullWidth
-        type="number"
-        value={mobileNumber?.trim().length <= 0 ? "" : mobileNumber}
-        onChange={(e) => {
-          setMobileNumber(e.target.value);
-          setMobileNumberError(false);
-        }}
-        onBlur={(e) => {
-          if (
-            e.target.value.trim().length < 10 ||
-            e.target.value.trim().length > 10
-          ) {
-            setMobileNumberError(true);
-          }
-        }}
-        onFocus={(e) =>
-          e.target.addEventListener(
-            "wheel",
-            function (e) {
-              e.preventDefault();
-            },
-            { passive: false }
-          )
-        }
-        error={mobileNumberError}
-        helperText={
-          mobileNumberError && mobileNumber?.trim().length > 10
-            ? "Please provide valid mobile number."
-            : mobileNumberError &&
-              mobileNumber?.trim().length > 0 &&
-              mobileNumber?.trim().length < 10
-            ? "Please provide valid mobile number."
-            : mobileNumberError
-            ? "This is a required field."
-            : ""
-        }
-        margin="normal"
-        variant="standard"
-        sx={{
-          "& input[type=number]": {
-            "-moz-appearance": "textfield",
-            "-webkit-appearance": "none",
-            margin: 0,
-          },
-          "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button":
-            {
-              "-webkit-appearance": "none",
-            },
-        }}
       />
       <div
         className={`py-2 h-full w-full flex flex-wrap items-center justify-center text-center cursor-pointer mt-4`}
@@ -407,8 +306,8 @@ const FormComponent: React.FC = () => {
         </div>
       </div>
       {loaded ? (
-        <span className="w-full flex item-center justify-center">
-          <CircularProgress />
+        <span className="w-full flex item-center text-sm lg:text-md justify-center border border-gray-400 bg-gray-200 font-semibold rounded-full py-2 mt-2">
+          We are matching your profile Please wait...
         </span>
       ) : (
         <Button
