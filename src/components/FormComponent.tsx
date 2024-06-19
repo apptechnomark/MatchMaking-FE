@@ -307,7 +307,7 @@ const FormComponent: React.FC = () => {
       </div>
       {loaded ? (
         <span className="w-full flex item-center text-sm lg:text-md justify-center border border-gray-400 bg-gray-200 font-semibold rounded-full py-2 mt-2">
-          We are matching your profile Please wait...
+          We are matching your profile please wait...
         </span>
       ) : (
         <Button

@@ -181,7 +181,7 @@ const Page: React.FC = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                           <a
-                            href={`http://20.198.19.81/match_making/upload/${item.name}`}
+                            href={`http://20.198.19.81/match_making/tmp7/${item.name}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-[#0592C6]"
