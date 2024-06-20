@@ -18,7 +18,6 @@ import { toast } from "react-toastify";
 const FormComponent: React.FC = () => {
   const router = useRouter();
   const [name, setName] = useState("");
-  const [nameError, setNameError] = useState(false);
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   const [email, setEmail] = useState("");
   const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -119,17 +118,9 @@ const FormComponent: React.FC = () => {
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    // name.trim().length < 3 && setNameError(true);
-    // name.trim().length > 50 && setNameError(true);
     fileName === null && setFileErr(3);
 
-    if (
-      // !nameError &&
-      // name.trim().length > 3 &&
-      // name.trim().length < 50 &&
-      fileName !== null &&
-      fileErr === 0
-    ) {
+    if (fileName !== null && fileErr === 0) {
       setLoaded(true);
       try {
         const formData = new FormData();
@@ -151,11 +142,10 @@ const FormComponent: React.FC = () => {
             },
           }
         );
-        const { ResponseStatus, ResponseData, Username } = response.data;
+        const { ResponseStatus } = response.data;
         if (ResponseStatus.toLowerCase() === "success") {
           toast.success("Form submitted successfully!");
-          localStorage.setItem("Username", Username);
-          localStorage.setItem("ResponseData", JSON.stringify(ResponseData));
+          localStorage.setItem("ResponseData", JSON.stringify(response.data));
           setLoaded(false);
           router.push("/recommendations");
         } else {
@@ -173,31 +163,11 @@ const FormComponent: React.FC = () => {
     <form onSubmit={handleSubmit} className="ml-10 lg:ml-0 w-[80%] lg:w-[50%]">
       <TextField
         label="Name"
-        className={`${nameError && "!mt-0"}`}
         fullWidth
         value={name?.trim().length <= 0 ? "" : name}
         onChange={(e) => {
           setName(e.target.value);
-          // setNameError(false);
         }}
-        // onBlur={(e) => {
-        //   if (
-        //     e.target.value.trim().length < 3 ||
-        //     e.target.value.trim().length > 50
-        //   ) {
-        //     setNameError(true);
-        //   }
-        // }}
-        // error={nameError}
-        // helperText={
-        //   nameError && name?.trim().length > 50
-        //     ? "Maximum 50 characters allowed."
-        //     : nameError && name?.trim().length > 0 && name?.trim().length < 3
-        //     ? "Minimum 3 characters allowed."
-        //     : nameError
-        //     ? "This is a required field."
-        //     : ""
-        // }
         autoComplete="off"
         margin="normal"
         variant="standard"
@@ -273,9 +243,7 @@ const FormComponent: React.FC = () => {
                               Drag and drop files here
                             </p>
                             <p className="text-xs opacity-50">
-                              Limit 200MB per file
-                              {/* <span className="w-2 h-2 rounded-full bg-red-500"></span> */}{" "}
-                              PDF
+                              Limit 200MB per file PDF
                             </p>
                           </div>
                         </div>
