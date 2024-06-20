@@ -24,7 +24,7 @@ const Page: React.FC = () => {
       setLoader(false);
     }
   }, []);
-
+  
   return (
     <>
       {loader ? (
@@ -38,11 +38,11 @@ const Page: React.FC = () => {
               <div className="flex items-center justify-center lg:gap-2 text-md lg:text-xl font-semibold">
                 <span>
                   Hello&nbsp;
-                  {!!responseData?.UserName
-                    ? responseData?.UserName?.charAt(0).toUpperCase() +
-                      responseData?.UserName?.slice(1) +
-                      " "
-                    : "User "}
+                  {!!responseData?.Username
+                    ? responseData?.Username?.charAt(0).toUpperCase() +
+                      responseData?.Username?.slice(1) +
+                      ", "
+                    : "User, "}
                   <a
                     href={`http://20.198.19.81/match_making/upload/${responseData?.file_path}`}
                     target="_blank"
@@ -51,7 +51,7 @@ const Page: React.FC = () => {
                   >
                     Your CV
                   </a>
-                  &nbsp;matches the below profile
+                  &nbsp;matches the below profiles
                 </span>
                 <TipsAndUpdatesIcon className="text-yellow-400" />
               </div>

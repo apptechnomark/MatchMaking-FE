@@ -3,7 +3,6 @@ import { Close } from "@mui/icons-material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import {
   Button,
-  CircularProgress,
   IconButton,
   LinearProgress,
   TextField,
@@ -15,10 +14,9 @@ import React, { useEffect, useState } from "react";
 import Dropzone from "react-dropzone";
 import { toast } from "react-toastify";
 
-const FormComponent: React.FC = () => {
+const FormComponent = () => {
   const router = useRouter();
   const [name, setName] = useState("");
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   const [email, setEmail] = useState("");
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [fileName, setFileName] = useState<string | null>(null);
@@ -275,7 +273,7 @@ const FormComponent: React.FC = () => {
       </div>
       {loaded ? (
         <span className="w-full flex item-center text-sm lg:text-md justify-center border border-gray-400 bg-gray-200 font-semibold rounded-full py-2 mt-2">
-          We are matching your profile please wait...
+          Please wait... We are finding matching profile
         </span>
       ) : (
         <Button
